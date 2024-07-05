@@ -28,7 +28,7 @@ Page *pages[] = { new Page(), new Page(), new Page() };
 #ifndef DSP_TASK_DELAY
   #define DSP_TASK_DELAY  2
 #endif
-#if !((DSP_MODEL==DSP_ST7735 && DTYPE==INITR_BLACKTAB) || DSP_MODEL==DSP_ST7789 || DSP_MODEL==DSP_ST7796 || DSP_MODEL==DSP_ILI9488 || DSP_MODEL==DSP_ILI9486 || DSP_MODEL==DSP_ILI9341 || DSP_MODEL==DSP_ILI9225)
+#if !((DSP_MODEL==DSP_ST7735 && DTYPE==INITR_BLACKTAB) || DSP_MODEL==DSP_ST7789 || DSP_MODEL==DSP_ST7796 || DSP_MODEL==DSP_ILI9488 || DSP_MODEL==DSP_ILI9486 || DSP_MODEL==DSP_ILI9341 || DSP_MODEL==DSP_ILI9225 || DSP_MODEL==DSP_NV3041A)
   #undef  BITRATE_FULL
   #define BITRATE_FULL     false
 #endif
@@ -37,6 +37,8 @@ QueueHandle_t displayQueue;
 
 void returnPlayer(){
   display.putRequest(NEWMODE, PLAYER);
+  if (config.store.lastStation !=display.currentPlItem)
+    player.sendCommand({PR_PLAY, display.currentPlItem});
 }
 
 void Display::_createDspTask(){
@@ -307,11 +309,11 @@ void Display::resetQueue(){
 
 void Display::_drawPlaylist() {
   dsp.drawPlaylist(currentPlItem);
-  _setReturnTicker(30);
+  _setReturnTicker(3);
 }
 
 void Display::_drawNextStationNum(uint16_t num) {
-  _setReturnTicker(30);
+  _setReturnTicker(10);
   _meta.setText(config.stationByNum(num));
   _nums.setText(num, "%d");
 }
@@ -385,7 +387,7 @@ void Display::loop() {
       case DBITRATE: {
           char buf[20]; 
           snprintf(buf, 20, bitrateFmt, config.station.bitrate); 
-          if(_bitrate) { _bitrate->setText(config.station.bitrate==0?"":buf); } 
+          if(_bitrate) { _bitrate->setText(config.station.bitrate==0?"N/A":buf); }
           if(_fullbitrate) { 
             _fullbitrate->setBitrate(config.station.bitrate); 
             _fullbitrate->setFormat(config.configFmt); 

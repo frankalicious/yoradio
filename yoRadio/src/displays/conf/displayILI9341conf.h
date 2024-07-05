@@ -9,6 +9,7 @@
 #define displayILI9341conf_h
 
 #define DSP_WIDTH       320
+#define DSP_HEIGHT      240
 #define TFT_FRAMEWDT    8
 #define MAX_WIDTH       DSP_WIDTH-TFT_FRAMEWDT*2
 
@@ -20,13 +21,13 @@
 #define bootLogoTop     68
 
 /* SROLLS  */                            /* {{ left, top, fontsize, align }, buffsize, uppercase, width, scrolldelay, scrolldelta, scrolltime } */
-const ScrollConfig metaConf       PROGMEM = {{ TFT_FRAMEWDT, TFT_FRAMEWDT, 3, WA_LEFT }, 140, true, MAX_WIDTH, 5000, 5, 30 };
-const ScrollConfig title1Conf     PROGMEM = {{ TFT_FRAMEWDT, 50, 2, WA_LEFT }, 140, true, MAX_WIDTH-TITLE_FIX, 5000, 4, 30 };
-const ScrollConfig title2Conf     PROGMEM = {{ TFT_FRAMEWDT, 70, 2, WA_LEFT }, 140, true, MAX_WIDTH-TITLE_FIX, 5000, 4, 30 };
-const ScrollConfig playlistConf   PROGMEM = {{ TFT_FRAMEWDT, 112, 2, WA_LEFT }, 140, true, MAX_WIDTH, 1000, 4, 30 };
+const ScrollConfig metaConf       PROGMEM = {{ TFT_FRAMEWDT, TFT_FRAMEWDT, 3, WA_LEFT }, 140, false, MAX_WIDTH, 5000, 5, 30 };
+const ScrollConfig title1Conf     PROGMEM = {{ TFT_FRAMEWDT, 50, 2, WA_LEFT }, 140, false, MAX_WIDTH-TITLE_FIX, 5000, 4, 30 };
+const ScrollConfig title2Conf     PROGMEM = {{ TFT_FRAMEWDT, 70, 2, WA_LEFT }, 140, false, MAX_WIDTH-TITLE_FIX, 5000, 4, 30 };
+const ScrollConfig playlistConf   PROGMEM = {{ TFT_FRAMEWDT, 112, 2, WA_LEFT }, 140, false, MAX_WIDTH, 1000, 4, 30 };
 const ScrollConfig apTitleConf    PROGMEM = {{ TFT_FRAMEWDT, TFT_FRAMEWDT, 3, WA_CENTER }, 140, false, MAX_WIDTH, 0, 4, 20 };
 const ScrollConfig apSettConf     PROGMEM = {{ TFT_FRAMEWDT, 240-TFT_FRAMEWDT-16, 2, WA_LEFT }, 140, false, MAX_WIDTH, 0, 4, 30 };
-const ScrollConfig weatherConf    PROGMEM = {{ 8, 87, 2, WA_LEFT }, 140, true, MAX_WIDTH, 0, 4, 30 };
+const ScrollConfig weatherConf    PROGMEM = {{ 8, 87, 2, WA_LEFT }, 140, false, MAX_WIDTH, 0, 4, 30 };
 
 /* BACKGROUNDS  */                       /* {{ left, top, fontsize, align }, width, height, outlined } */
 const FillConfig   metaBGConf     PROGMEM = {{ 0, 0, 0, WA_LEFT }, DSP_WIDTH, 38, false };
@@ -59,8 +60,14 @@ const VUBandsConfig bandsConf     PROGMEM = { 24, 100, 4, 2, 10, 2 };
 /* STRINGS  */
 const char         numtxtFmt[]    PROGMEM = "%d";
 const char           rssiFmt[]    PROGMEM = "WiFi %d";
+//#if defined(NO_ICONS)
+#if NO_ICONS
 const char          iptxtFmt[]    PROGMEM = "IP %s";
 const char         voltxtFmt[]    PROGMEM = "Vol %d";
+#else
+const char          iptxtFmt[]    PROGMEM = "\010 %s";
+const char         voltxtFmt[]    PROGMEM = "\023\025%d";
+#endif
 const char        bitrateFmt[]    PROGMEM = "%d kBs";
 
 /* MOVES  */                             /* { left, top, width } */
