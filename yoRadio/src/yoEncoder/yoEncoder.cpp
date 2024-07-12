@@ -60,7 +60,7 @@ void yoEncoder::readEncoder_ISR()
 						}
 						else
 						{
-							this->encoder0Pos = this->encoder0Pos + rotaryAccelerationCoef / millisAfterLastMotion;
+							this->encoder0Pos = this->encoder0Pos - rotaryAccelerationCoef / millisAfterLastMotion;
 						}
 					}
 				}
