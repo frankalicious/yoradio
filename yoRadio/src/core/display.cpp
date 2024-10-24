@@ -64,6 +64,7 @@ void Display::init() {
   analogSetAttenuation(ADC_0db);
 #endif
   _bootStep = 0;
+  currentPlItem = config.store.lastStation;
   dsp.initDisplay();
   displayQueue=NULL;
   displayQueue = xQueueCreate( 5, sizeof( requestParams_t ) );
