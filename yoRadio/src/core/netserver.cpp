@@ -280,7 +280,7 @@ void NetServer::processQueue(){
       case GETSYSTEM:     sprintf (wsbuf, "{\"sst\":%d,\"aif\":%d,\"vu\":%d,\"softr\":%d}", config.store.smartstart != 2, config.store.audioinfo, config.store.vumeter, config.store.softapdelay); break;
       case GETSCREEN:     sprintf (wsbuf, "{\"flip\":%d,\"inv\":%d,\"nump\":%d,\"tsf\":%d,\"tsd\":%d,\"dspon\":%d,\"br\":%d,\"con\":%d}", config.store.flipscreen, config.store.invertdisplay, config.store.numplaylist, config.store.fliptouch, config.store.dbgtouch, config.store.dspon, config.store.brightness, config.store.contrast); break;
       case GETTIMEZONE:   sprintf (wsbuf, "{\"tzh\":%d,\"tzm\":%d,\"sntp1\":\"%s\",\"sntp2\":\"%s\"}", config.store.tzHour, config.store.tzMin, config.store.sntp1, config.store.sntp2); break;
-      case GETWEATHER:    sprintf (wsbuf, "{\"wen\":%d,\"wlat\":\"%s\",\"wlon\":\"%s\",\"wkey\":\"%s\"}", config.store.showweather, config.store.weatherlat, config.store.weatherlon, config.store.weatherkey); break;
+      case GETWEATHER:    sprintf (wsbuf, "{\"wen\":%d,\"wlat\":\"%s\",\"wlon\":\"%s\"}", config.store.showweather, config.store.weatherlat, config.store.weatherlon); break;
       case GETCONTROLS:   sprintf (wsbuf, "{\"vols\":%d,\"enca\":%d,\"irtl\":%d}", config.store.volsteps, config.store.encacc, config.store.irtlp); break;
       case DSPON:         sprintf (wsbuf, "{\"dspontrue\":%d}", 1); break;
       case STATION:       requestOnChange(STATIONNAME, clientId); requestOnChange(ITEM, clientId); break;
@@ -506,13 +506,6 @@ void NetServer::onWsMessage(void *arg, uint8_t *data, size_t len, uint8_t client
         strlcpy(config.store.weatherlon, val, 10);
         return;
       }
-      if (strcmp(cmd, "key") == 0) {
-        strlcpy(config.store.weatherkey, val, 64);
-        config.save();
-        network.trueWeather=false;
-        display.putRequest(NEWMODE, CLEAR); display.putRequest(NEWMODE, PLAYER);
-        return;
-      }
       /*  RESETS  */
       if (strcmp(cmd, "reset") == 0) {
         if (strcmp(val, "system") == 0) {
@@ -556,7 +549,6 @@ void NetServer::onWsMessage(void *arg, uint8_t *data, size_t len, uint8_t client
           config.store.showweather = 0;
           strlcpy(config.store.weatherlat, "55.7512", 10);
           strlcpy(config.store.weatherlon, "37.6184", 10);
-          strlcpy(config.store.weatherkey, "", 64);
           config.save();
           network.trueWeather=false;
           display.putRequest(NEWMODE, CLEAR); display.putRequest(NEWMODE, PLAYER);
