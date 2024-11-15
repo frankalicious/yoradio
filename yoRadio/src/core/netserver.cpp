@@ -500,10 +500,12 @@ void NetServer::onWsMessage(void *arg, uint8_t *data, size_t len, uint8_t client
       }
       if (strcmp(cmd, "lat") == 0) {
         strlcpy(config.store.weatherlat, val, 10);
+	config.save();
         return;
       }
       if (strcmp(cmd, "lon") == 0) {
         strlcpy(config.store.weatherlon, val, 10);
+	config.save();
         return;
       }
       /*  RESETS  */
